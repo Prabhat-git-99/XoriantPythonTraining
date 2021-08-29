@@ -13,7 +13,6 @@ class CustomerController( ):
     def customerLogin( self ):
 
         found = self.obj.customerLogin( self.accNo, self.password )
-        print( 'FF ', found )
         if ( found[ 'user' ] and found[ 'user' ][ 6 ] ):
 
             password = found[ 'account' ][ 3 ]
