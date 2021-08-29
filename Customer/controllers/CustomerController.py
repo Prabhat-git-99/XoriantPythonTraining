@@ -1,5 +1,7 @@
 import Customer.services.CustomerService
 import datetime
+from termcolor import colored
+
 
 class CustomerController( ):
 
@@ -97,6 +99,13 @@ class CustomerController( ):
         return bal
 
 
+    def balanceEnquiry( self ):
+
+        query = 'SELECT * FROM account WHERE acc_no=%s'
+        bal = self.obj.fetchBalance( query, self.accNo )
+        print( colored( bal, 'red' )  )
+
+
     def transferMoney( self, to_acc ):
 
         query = 'SELECT * FROM account WHERE acc_no=%s'
@@ -112,13 +121,24 @@ class CustomerController( ):
             return
         
         query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
-        amt = int( balance_from ) - amt 
+        amt = int( balance_from ) - amt
         found = self.obj.withdraw( query, self.accNo, str( amt ) )
+        query = 'insert into transaction ( accNo, to_acc_no, amount_transfered, date, trans_type, before_bal, updated_bal ) values ( %s, %s, %s , %s, %s, %s, %s )'
+        found = self.obj.updateTransaction( query, self.accNo, to_acc,  real_amt, datetime.datetime.now(), "money transfered", bal_from[ 1 ], amt  )
+
 
         query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
         amt = int( bal_to[ 1 ] ) + real_amt
         found = self.obj.withdraw( query, to_acc, str( amt ) )
+        query = 'insert into transaction ( accNo, to_acc_no, amount_transfered, date, trans_type, before_bal, updated_bal ) values ( %s, %s, %s , %s, %s, %s, %s )'
+        found = self.obj.updateTransaction( query, to_acc, self.accNo, real_amt, datetime.datetime.now(), "money recieved", bal_to[ 1 ], amt  )
 
 
+    def resetPin( self ):
+
+        # old_pin = input( 'Enter 4 digit Old PIN: ' )
+        new_pin = input( 'Enter 4 digit New PIN: ' )
+        query = 'UPDATE account set pin=%s WHERE acc_no=%s'
+        self.obj.resetPin( query, new_pin, self.accNo )
 
 

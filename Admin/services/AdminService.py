@@ -77,3 +77,13 @@ class AdminService( ):
         # found = cursor.fetchone( )
         self.connect.set_cursor( cursor )
         return 'success'
+
+    def checkTransaction( self, accNo ):
+
+        
+        query = 'select * from transaction where accNo = %s'
+        cursor = self.mydb.cursor( )
+        cursor.execute( query, ( accNo, ) )
+        found = cursor.fetchall( )
+        self.connect.set_cursor( cursor )
+        return found

@@ -1,4 +1,5 @@
 # from BankingProj.Admin.services.AdminService import AdminService
+from typing import Container
 from mysql import connector
 import Admin.services.AdminService
 import Admin.controller.AdminController
@@ -46,7 +47,11 @@ class AdminMenu():
                 break
 
     def checkTransaction(self):
-        pass
+        # self.fetchAllCustomer( )
+        acc_no = input( 'Enter Account Number: ' )
+        obj = Admin.controller.AdminController.AdminController( self.name, self.password )
+        records = obj.checkTransaction( acc_no )
+        print( records )
 
     def deleteCustomer(self):
         print('Which customer you want to ')
@@ -88,12 +93,12 @@ class AdminMenu():
 
 
     def menu(self):
-        print('Welcome')
-        print('1. Fetch All Customer')
-        print('2. Fetch Customer by AccNo')
-        print('3. Verify Customer')
-        print('4. Delete Customer')
-        print('5. Check Transactions of Customer')
-        print('6. Logout')
-        choice = int(input('Enter your choice(1-6): '))
+        print( 'Welcome' )
+        print( '1. Fetch All Customer' )
+        print( '2. Fetch Customer by AccNo' )
+        print( '3. Verify Customer' )
+        print( '4. Delete Customer' )
+        print( '5. Check Transactions of Customer' )
+        print( '6. Logout' )
+        choice = int(input('Enter your choice(1-6): ' ) )
         return choice

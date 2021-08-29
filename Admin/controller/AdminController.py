@@ -78,3 +78,17 @@ class AdminController():
 
         accNo = input( 'Enter Account No: ')
         res = self.obj.deleteByAcc( accNo )
+
+    def checkTransaction( self, acc ):
+
+        res = self.obj.checkTransaction( acc )
+        for row in res:
+            print( '************************' )
+            print( '1. Account Number: ', row[ 0 ] )
+            print( '2. To: ', row[ 1 ] )
+            print( '3. Amount Transfered: ', row[ 2 ] )
+            print( '4. Date: ', row[ 3 ] )
+            print( '5. Transaction type: ', row[ 4 ] )
+            print( '6. Prev Balance: ', row[ 5 ] )
+            print( '7. Updated Balance: ', row[ 6 ] )
+            

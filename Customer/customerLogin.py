@@ -89,10 +89,13 @@ class CustomerLogin( Customer.Customer.Customer ):
                         obj.transferMoney( to_acc )
 
                     elif inp == 4:
-                        pass
+
+                        obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
+                        obj.balanceEnquiry( )
 
                     elif inp == 5:
-                        pass
+                        obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
+                        obj.resetPin( )
 
                     elif inp == 6:
                         pass

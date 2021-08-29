@@ -65,3 +65,11 @@ class CustomerService( ):
         found = cursor.fetchall( )
         self.connect.set_cursor( cursor )
         print( found )
+
+    def resetPin( self, query, new_pin, acc ):
+
+        cursor = self.mydb.cursor( )
+        cursor.execute( query, ( new_pin, acc ) )        
+        self.mydb.commit( )
+        found = cursor.fetchall( )
+        self.connect.set_cursor( cursor )
