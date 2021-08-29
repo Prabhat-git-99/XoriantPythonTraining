@@ -3,12 +3,12 @@ import datetime
 
 class CustomerController( ):
 
-    def __init__(self, accNo, password ) -> None:
+    def __init__( self, accNo, password ) -> None:
         self.accNo = accNo
         self.password = password
         self.saving_bal = ''
         self.fixed_bal = ''
-        self.obj = Customer.services.CustomerService.CustomerService()
+        self.obj = Customer.services.CustomerService.CustomerService( )
     
     def customerLogin( self ):
 
@@ -26,6 +26,7 @@ class CustomerController( ):
     
     def withdraw( self, account_type, status ):
         
+        print( 'hii' )
         if status != 'approved':
             print( 'You account is not approved yet!' )
             return
