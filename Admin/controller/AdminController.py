@@ -1,19 +1,23 @@
 import config
 import Admin.services.AdminService
 
+import shutil
+from termcolor import colored
+columns = shutil.get_terminal_size().columns
+
 class AdminController():
 
-    def __init__(self, name, password):
+    def __init__( self, name, password ):
         self.name = name
         self.password = password
         # return self.adminLogin()
-        self.obj = Admin.services.AdminService.AdminService()
+        self.obj = Admin.services.AdminService.AdminService( )
 
     def adminLogin( self ):
 
         found = self.obj.adminLogin( self.name, self.password )
         if ( found ):
-            print( found )
+            # print( found )
             if ( found[2] == self.password ):
                 return True
         else:
@@ -31,22 +35,22 @@ class AdminController():
 
     def verifyCustomer( self ):
 
-        cid = int( input( 'Enter Customer ID: ') )
+        cid = int( input( colored( 'Enter Customer ID: ', 'blue', attrs = [ 'bold' ] ) ) )
         
         found = self.obj.fetchByCID( cid )
         
         if ( found[ 7 ] == 1 and ( found[ 8 ] == 'approved' and found[ 9 ] == 'approved' ) ):
-            print( 'Customer is already Verified' )
+            print( colored( 'Customer is already Verified', 'red', attrs = [ 'bold' ] ).center( columns ) )
         else:
             if ( found[ 8 ] != 'approved' and found[ 9 ] != 'approved' ):
-                accNo = input( 'Assign unique account number: ' )
-                pin = input( 'Assign 4 digit pin: ' )
+                accNo = input( colored( 'Assign unique account number: ', 'blue', attrs = [ 'bold' ] ) )
+                pin = input( colored( 'Assign 4 digit pin: ', 'blue', attrs = [ 'bold' ] ) )
                 self.obj.verifyCustomer( cid, accNo, pin )
                 # print( found )
                 self.openAccount( found, accNo, pin )
             else:
                 accNo = found[ 1 ]
-                pin = input( 'Assign New 4 digit pin: ' )
+                pin = input( colored( 'Assign New 4 digit pin: ', 'blue', attrs = [ 'bold' ] ) )
                 self.obj.verifyCustomer( cid, accNo, pin )
                 self.openAccount( found, accNo, pin )
 
@@ -70,13 +74,11 @@ class AdminController():
                 query1 = 'insert into account ( balance_fixed, pin, acc_no ) values (0, %s, %s)'
             self.obj.openAccount( query, query1, accNo, pin )
 
-        # self.obj.openAccount( query, query1, accNo, pin )
-        # print( new_found )
 
     
     def deleteCustomer( self ):
 
-        accNo = input( 'Enter Account No: ')
+        accNo = input( colored( 'Enter Account No: ', 'blue', attrs = [ 'bold' ] ) )
         res = self.obj.deleteByAcc( accNo )
 
     def checkTransaction( self, acc ):
@@ -84,11 +86,10 @@ class AdminController():
         res = self.obj.checkTransaction( acc )
         for row in res:
             print( '************************' )
-            print( '1. Account Number: ', row[ 0 ] )
-            print( '2. To: ', row[ 1 ] )
-            print( '3. Amount Transfered: ', row[ 2 ] )
-            print( '4. Date: ', row[ 3 ] )
-            print( '5. Transaction type: ', row[ 4 ] )
-            print( '6. Prev Balance: ', row[ 5 ] )
-            print( '7. Updated Balance: ', row[ 6 ] )
-            
+            print( colored( 'Account Number : ', 'blue', attrs = [ 'bold' ] ), row[ 0 ] )
+            print( colored( 'To : ', 'blue', attrs = [ 'bold' ] ), row[ 1 ] )
+            print( colored( 'Amount Transfered : ', 'blue', attrs = [ 'bold' ] ), row[ 2 ] )
+            print( colored( 'Date : ', 'blue', attrs = [ 'bold' ] ), row[ 3 ] )
+            print( colored( 'Transaction Type : ', 'blue', attrs = [ 'bold' ] ), row[ 4 ] )
+            print( colored( 'Previous Balance : ', 'blue', attrs = [ 'bold' ] ), row[ 5 ] )
+            print( colored( 'Updated Balance : ', 'blue', attrs = [ 'bold' ] ), row[ 6 ] )

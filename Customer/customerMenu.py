@@ -1,6 +1,11 @@
 import Customer.customerLogin
 import Customer.customerRegister
 
+import shutil
+columns = shutil.get_terminal_size().columns
+
+from termcolor import colored
+
 class CustomerMenu(  ):
 
     def __init__(self ) -> None:
@@ -11,10 +16,10 @@ class CustomerMenu(  ):
     
     def printMenu( self ):
 
-        print( 'Hello Customer' )
-        print( '1. Login' )
-        print( '2. Register' )
-        choice = int( input( 'Enter your choice( 1-2 ): ') )
+        print( colored( 'Hello Customer!!', 'green', attrs = [ 'bold' ] ).center( columns ) )
+        print( colored( '1. Login', 'magenta', attrs = [ 'bold' ] ).center( columns ) )
+        print( colored( '2. Register', 'magenta', attrs = [ 'bold' ] ).center( columns ) )
+        choice = int( input( colored( 'Enter your choice( 1-2 ): ', 'blue', attrs = [ 'bold' ] ) ) )
         if ( choice == 1 ):
             obj = Customer.customerLogin.CustomerLogin( )
             obj.loginMenu( )
@@ -24,4 +29,5 @@ class CustomerMenu(  ):
             obj.registerMenu( )
 
         else:
-            print('bye')
+            print( colored( 'Thank You!', 'red', attrs=[ 'bold' ] ).center( columns ) )
+        

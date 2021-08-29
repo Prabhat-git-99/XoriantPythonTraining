@@ -1,6 +1,11 @@
 import Customer.Customer
 import Customer.controllers.CustomerController
 
+import shutil
+columns = shutil.get_terminal_size().columns
+
+from termcolor import HIGHLIGHTS, colored
+
 class CustomerLogin( Customer.Customer.Customer ):
 
     def __init__( self ):
@@ -9,15 +14,14 @@ class CustomerLogin( Customer.Customer.Customer ):
         self.password = ''
 
     def loginMenu( self ):
-        print('menu login')
-        accNo = input( 'Enter Account No.: ' )
-        self.password = input( 'Enter 4 Digit PIN: ' )
+        accNo = input( colored( 'Enter Account No.: ', 'blue', attrs = [ 'bold' ] ) )
+        self.password = input( colored( 'Enter 4 Digit Pin: ', 'blue', attrs = [ 'bold' ] ) )
         obj = Customer.controllers.CustomerController.CustomerController( accNo, self.password )
         found = obj.customerLogin( )
         if found[ 'status' ] == 'not found':
-            print( 'Wrong Credentials!' )
+            print( colored( 'Wrong Credentials!', 'red', attrs = [ 'bold' ] ).center( ) )
         else:
-            print( 'Welcome' )
+            print( colored( 'Welcome', 'green', attrs = [ 'bold' ] ).center( columns ) )
             self.login = True
             self.set_acc( found[ 'user' ][ 1 ] )
             self.set_name( found[ 'user' ][ 2 ] )
@@ -35,7 +39,8 @@ class CustomerLogin( Customer.Customer.Customer ):
     def showCustomerDetail( self ):
         # details = Customer.Customer.Customer.getDetails( )
         details = self.getDetails( )
-        print( details )
+        print( '' )
+        print( colored( 'Hello ' + details[ 'name' ] , 'cyan', attrs = [ 'bold' ] ).center( columns ) )
 
 
     def menu( self ):
@@ -44,15 +49,15 @@ class CustomerLogin( Customer.Customer.Customer ):
             flag = True
             while flag:
 
-                print( '******HELLO CUSTOMER*******' )
-                print( '1. Withdraw' )
-                print( '2. Deposit' )
-                print( '3. Money Transfer' )
-                print( '4. Balance Enquiry' )
-                print( '5. Reset PIN' )
-                print( '6. Edit Details' )
-                print( '7. Exit' )
-                inp = int( input( 'Enter Your Choice( 1-7 ): ' ) )
+                print( colored( '******HELLO CUSTOMER*******', 'grey', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '1. Withdraw', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '2. Deposit', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '3. Money Transfer', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '4. Balance Enquiry', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '5. Reset PIN', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                # print( '6. Edit Details' )
+                print( colored( '6. Exit', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                inp = int( input( colored( 'Enter Your Choice( 1-6 ): ', 'blue', attrs = [ 'bold' ] ) ) )
 
                 if inp == 7:
                     flag = False
@@ -60,9 +65,9 @@ class CustomerLogin( Customer.Customer.Customer ):
         
                 else:
                     if inp == 1:
-                        print( '1. Saving' ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
-                        print( '2. Fixed' ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
-                        op = int( input( 'Enter Type of Account: ') )
+                        print( colored( '1. Saving', 'yellow', attrs = [ 'bold' ] ).center( columns ) ) if self.saving_acc == 'approved' else print( colored( 'Saving account is not approved yet!', 'red' ) )
+                        print( colored( '2. Fixed', 'yellow', attrs = [ 'bold' ] ).center( columns ) ) if self.fixed_acc == 'approved' else print( colored( 'Fixed account is not approved yet!', 'red' ) )
+                        op = int( input( colored( 'Enter Type of Account: ', 'blue', attrs = [ 'bold' ] ).center( columns ) ) )
                         if op == 1:
                             obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
                             obj.withdraw( 'saving', self.saving_acc )
@@ -71,9 +76,9 @@ class CustomerLogin( Customer.Customer.Customer ):
                             obj.withdraw( 'fixed', self.fixed_acc)
 
                     elif inp == 2:
-                        print( '1. Saving' ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
-                        print( '2. Fixed' ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
-                        op = int( input( 'Enter Type of Account: ') )
+                        print( colored( '1. Saving', 'yellow', attrs = [ 'yellow' ] ).center( columns ) ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
+                        print( colored( '2. Fixed', 'yellow', attrs = [ 'yellow' ] ).center( columns ) ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
+                        op = int( input( colored( 'Enter Type of Account: ', 'blue', attrs = [ 'bold' ] ).center( columns ) ) )
                         if op == 1:
                             obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
                             obj.deposit( 'saving', self.saving_acc )
@@ -82,9 +87,7 @@ class CustomerLogin( Customer.Customer.Customer ):
                             obj.deposit( 'fixed', self.fixed_acc )
 
                     elif inp == 3:
-                        to_acc = input( 'Enter Account no. to transfer: ' )
-                        # print( '1. Saving' ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
-                        # print( '2. Fixed' ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
+                        to_acc = input( colored( 'Enter Account no. to transfer: ', 'blue', attrs = [ 'bold' ] ) )
                         obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
                         obj.transferMoney( to_acc )
 
@@ -98,5 +101,5 @@ class CustomerLogin( Customer.Customer.Customer ):
                         obj.resetPin( )
 
                     elif inp == 6:
-                        pass
+                        return
 

@@ -14,7 +14,7 @@ class Customer( ):
         print( 'Inititated.. ')
     
     def getDetails( self ):
-        
+
         return {
             'name': self.name,
             'accNo': self.accNo,
@@ -28,7 +28,7 @@ class Customer( ):
         }
 
     def set_name( self, name ):
-        print('seting name')
+        # print('seting name')
         self.name = name
     
     def set_acc( self, accNo ):

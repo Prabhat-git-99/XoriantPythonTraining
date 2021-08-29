@@ -1,6 +1,11 @@
 import Customer.services.CustomerService
 import datetime
 
+import shutil
+columns = shutil.get_terminal_size().columns
+
+from termcolor import colored
+
 class CustomerRegisteration( ):
 
     def __init__( self ) -> None:

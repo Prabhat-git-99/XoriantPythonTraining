@@ -1,6 +1,11 @@
 import Customer.Customer
 import Customer.controllers.CustomerRegister
 
+import shutil
+columns = shutil.get_terminal_size().columns
+
+from termcolor import colored
+
 class CustomerRegister( Customer.Customer.Customer ):
 
     def __init__(self) -> None:
@@ -11,14 +16,14 @@ class CustomerRegister( Customer.Customer.Customer ):
     
     def registerMenu( self ):
         print( 'Register Menu' )
-        self.set_name( input( 'Enter Name: ' ) )
-        self.set_address( input( 'Enter Address: ' ) )
-        self.set_phone( input( 'Enter Phone No.: ' ) )
-        self.set_email( input( 'Enter Email: ' ) )
-        self.set_adhar( input( 'Enter Aadhar No.: ' ) )
-        print( '1. Saving Account' ) 
-        print( '2. Fixed Account' )
-        account_type = int( input( 'Which Type of account: ' ) )
+        self.set_name( input( colored( 'Enter Name: ', 'blue' ) ) )
+        self.set_address( input( colored( 'Enter Address: ', 'blue' ) ) )
+        self.set_phone( input( colored( 'Enter Phone No.: ', 'blue' ) ) )
+        self.set_email( input( colored( 'Enter Email: ', 'blue' ) ) )
+        self.set_adhar( input( colored( 'Enter Aadhar No.: ', 'blue' ) ) )
+        print( colored( '1. Saving Account', 'yellow' ).center( columns ) )
+        print( colored( '2. Fixed Account', 'yellow' ).center( columns ) )
+        account_type = int( input( colored( 'Which Type of account: ', 'blue' ) ) )
         obj = Customer.controllers.CustomerRegister.CustomerRegisteration( )
-        print('see ', self.getDetails( ) )
+        # print('see ', self.getDetails( ) )
         obj.register( self.getDetails( ), account_type )

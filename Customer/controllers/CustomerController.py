@@ -1,5 +1,10 @@
+from re import A
 import Customer.services.CustomerService
 import datetime
+
+import shutil
+columns = shutil.get_terminal_size().columns
+
 from termcolor import colored
 
 
@@ -30,18 +35,18 @@ class CustomerController( ):
         
         print( 'hii' )
         if status != 'approved':
-            print( 'You account is not approved yet!' )
+            print( colored( 'You account is not approved yet!', 'red', attrs = [ 'bold' ] ) )
             return
 
-        amount = input( 'Enter amount to withdraw: ' )
+        amount = input( colored( 'Enter amount to withdraw: ', 'blue', attrs = [ 'bold' ] ) )
         bal = self.fetchBalance( self.accNo, account_type )
-        print( bal )
+        # print( bal )
         print( account_type )
         if account_type == 'saving':
             bal = bal[ 1 ]
             print( bal )
             if int( bal ) < int( amount ):
-                print( 'Insufficient Balance!' )
+                print( colored( 'Insufficient Balance!', 'red', attrs = [ 'bold' ] ) )
             else:
                 new_bal = int(bal) - int(amount)
                 query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
@@ -53,7 +58,7 @@ class CustomerController( ):
             bal = bal[ 2 ]
             print( bal )
             if int( bal ) < int( amount ):
-                print( 'Insufficient Balance!' )
+                print( colored( 'Insufficient Balance!', 'red', attrs = [ 'bold' ] ) )
             else:
                 new_bal = int(bal) - int(amount)
                 query = 'UPDATE account set balance_fixed=%s WHERE acc_no=%s'
@@ -62,25 +67,24 @@ class CustomerController( ):
                 found = self.obj.updateTransaction( query, self.accNo, "self_fixed", amount, datetime.datetime.now( ), "withdraw_fixed", bal, new_bal  )
 
 
-
     def deposit( self, account_type, status ):
 
         if status != 'approved':
-            print( 'You account is not approved yet!' )
+            print( colored( 'Your account is not approced yet!', 'red', attrs = [ 'bold' ] ) )
             return
 
-        amount = input( 'Enter amount to deposit: ' )
+        amount = input( colored( 'Enter amount to deposit: ', 'blue', attrs = [ 'bold' ] ) )
         bal = self.fetchBalance( self.accNo, account_type )
         # print( bal )
-        print( account_type )
+        # print( account_type )
         if account_type == 'saving':
     
             new_bal = int(bal[ 1 ]) + int( amount )
-            print( bal[ 1 ], amount, new_bal )
+            # print( bal[ 1 ], amount, new_bal )
             query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
             found = self.obj.withdraw( query, self.accNo, str( new_bal ) )
             # if ( found ):
-            print('inside found*****')
+            # print('inside found*****')
             query = 'insert into transaction ( accNo, to_acc_no, amount_transfered, date, trans_type, before_bal, updated_bal ) values ( %s, %s, %s , %s, %s, %s, %s )'
             found = self.obj.updateTransaction( query, self.accNo, "self", amount, datetime.datetime.now(), "deposit", bal[ 1 ], new_bal  )
 
@@ -103,7 +107,7 @@ class CustomerController( ):
 
         query = 'SELECT * FROM account WHERE acc_no=%s'
         bal = self.obj.fetchBalance( query, self.accNo )
-        print( colored( bal, 'red' )  )
+        print( colored( bal, 'green', attrs = [ 'bold' ] ).center( columns )  )
 
 
     def transferMoney( self, to_acc ):
@@ -113,11 +117,11 @@ class CustomerController( ):
         bal_to = self.obj.fetchBalance( query, to_acc )
 
         balance_from = bal_from[ 1 ]
-        amt = int( input( 'Enter amount to be Transfered: ' ) )
+        amt = int( input( colored( 'Enter amount to be Transfered: ', 'blue', attrs = [ 'bold' ] ) ) )
         real_amt = amt
 
         if amt > int( balance_from ):
-            print( 'Insufficient Balance!' )
+            print( colored( 'Insufficient Balance!', 'red', attrs = [ 'bold' ] ) )
             return
         
         query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
@@ -137,7 +141,7 @@ class CustomerController( ):
     def resetPin( self ):
 
         # old_pin = input( 'Enter 4 digit Old PIN: ' )
-        new_pin = input( 'Enter 4 digit New PIN: ' )
+        new_pin = input( colored( 'Enter 4 digit New PIN: ', 'blue', attrs = [ 'bold' ] ).center( columns ) )
         query = 'UPDATE account set pin=%s WHERE acc_no=%s'
         self.obj.resetPin( query, new_pin, self.accNo )
 

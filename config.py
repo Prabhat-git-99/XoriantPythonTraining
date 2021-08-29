@@ -1,5 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
+from termcolor import colored
+import shutil
+columns = shutil.get_terminal_size().columns
 
 host = 'localhost'
 database = 'xorpy' 
@@ -37,4 +40,6 @@ class DBConnect():
         if self.mydb.is_connected( ):
             self.cursor.close( )
             self.mydb.close( )
-            print( 'MySQL connection is closed ')
+            print( colored( 'MySQL connection is closed ', 'red' ).center( columns ) )
+
+    print( colored( '***************************************************************************', 'red' ).center( columns ) )

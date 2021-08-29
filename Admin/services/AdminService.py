@@ -7,8 +7,8 @@ class AdminService( ):
         self.connect = config.DBConnect( )
         self.mydb = self.connect.get_mydb( )
         self.db_info = self.mydb.get_server_info
-        if ( self.db_info ):
-            print( 'Connected To Server', self.db_info )
+        # if ( self.db_info ):
+            # print( 'Connected To Server', self.db_info )
 
     def adminLogin( self, name, password ):
 
@@ -46,7 +46,7 @@ class AdminService( ):
     
     def verifyCustomer( self, id, accNo, pin ):
         cursor = self.mydb.cursor( )
-        print( 'updating' )
+        # print( 'updating' )
         query = 'update customer set accNo=%s, status="1" where customer_id = %s'
         cursor.execute( query, ( accNo,id ) )
         self.mydb.commit( )
