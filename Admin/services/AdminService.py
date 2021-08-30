@@ -87,3 +87,35 @@ class AdminService( ):
         found = cursor.fetchall( )
         self.connect.set_cursor( cursor )
         return found
+
+    def checkBalance( self, accNo ):
+
+        query = 'select * from account where acc_no = %s'
+        cursor = self.mydb.cursor( )
+        cursor.execute( query, ( accNo, ) )
+        found = cursor.fetchall( )
+        self.connect.set_cursor( cursor )
+        return found
+
+    def sendDeposit( self, accNo, accType, amt ):
+        cursor = self.mydb.cursor( )
+        
+        if accType == 1:
+            print( accNo, accType, amt )
+            query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
+            cursor.execute( query, ( amt, accNo, ) )
+            self.mydb.commit( )
+            found = cursor.fetchall( )
+            self.connect.set_cursor( cursor )
+            return found
+
+        elif accType == 2:
+            query = 'UPDATE account set balance_fixed=%s WHERE acc_no=%s'
+            cursor.execute( query, ( amt, accNo, ) )
+            self.mydb.commit( )
+            found = cursor.fetchall( )
+            self.connect.set_cursor( cursor )    
+            return found
+
+    def updateTransaction( self, accNo, accType ):
+        pass

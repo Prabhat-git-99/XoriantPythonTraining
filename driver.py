@@ -1,6 +1,7 @@
 # from BankingProj.Admin.adminMenu import AdminMenu
 # from BankingProj.Admin.services.AdminService import AdminService
 import shutil
+from termcolor import colored
 columns = shutil.get_terminal_size().columns
 import config
 import sys
@@ -8,7 +9,7 @@ import sys
 import Admin.adminMenu
 import Customer.customerMenu
 import sys
-from termcolor import colored
+
 
 
 if __name__ == "__main__":

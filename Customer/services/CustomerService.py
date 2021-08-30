@@ -1,3 +1,4 @@
+import datetime
 from mysql.connector import cursor
 import config
 
@@ -58,7 +59,7 @@ class CustomerService( ):
         print( colored( '--------------------------------', 'white', attrs = [ 'bold' ] ).center( columns ) )
         a = 'requested'
         cursor = self.mydb.cursor( )
-        cursor.execute( query, ( '', info[ 'name' ], info[ 'address' ], info[ 'phone' ], info[ 'email' ], info[ 'adhar' ], a ) )        
+        cursor.execute( query, ( '', info[ 'name' ], info[ 'address' ], info[ 'phone' ], info[ 'email' ], info[ 'adhar' ], a, datetime.datetime.now( ) ) )        
         self.mydb.commit( )
         found = cursor.fetchall( )
         self.connect.set_cursor( cursor )
@@ -70,4 +71,12 @@ class CustomerService( ):
         cursor.execute( query, ( new_pin, acc ) )        
         self.mydb.commit( )
         found = cursor.fetchall( )
+        self.connect.set_cursor( cursor )
+
+    def openSavingFixedAccount( self, query, accNo, date ):
+
+        cursor = self.mydb.cursor( )
+        cursor.execute( query, ( date, accNo, ) )
+        self.mydb.commit( )
+        found = cursor.fetchone( )
         self.connect.set_cursor( cursor )

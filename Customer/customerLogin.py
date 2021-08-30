@@ -1,5 +1,6 @@
 import Customer.Customer
 import Customer.controllers.CustomerController
+import Customer.controllers.CustomerRegister
 
 import shutil
 columns = shutil.get_terminal_size().columns
@@ -55,9 +56,10 @@ class CustomerLogin( Customer.Customer.Customer ):
                 print( colored( '3. Money Transfer', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
                 print( colored( '4. Balance Enquiry', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
                 print( colored( '5. Reset PIN', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                print( colored( '6. Open Saving/Fixed Account', 'yellow', attrs = [ 'bold' ] ).center( columns ) )                
                 # print( '6. Edit Details' )
-                print( colored( '6. Exit', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
-                inp = int( input( colored( 'Enter Your Choice( 1-6 ): ', 'blue', attrs = [ 'bold' ] ) ) )
+                print( colored( '7. Exit', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                inp = int( input( colored( 'Enter Your Choice( 1-7 ): ', 'blue', attrs = [ 'bold' ] ) ) )
 
                 if inp == 7:
                     flag = False
@@ -76,8 +78,8 @@ class CustomerLogin( Customer.Customer.Customer ):
                             obj.withdraw( 'fixed', self.fixed_acc)
 
                     elif inp == 2:
-                        print( colored( '1. Saving', 'yellow', attrs = [ 'yellow' ] ).center( columns ) ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
-                        print( colored( '2. Fixed', 'yellow', attrs = [ 'yellow' ] ).center( columns ) ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
+                        print( colored( '1. Saving', 'yellow', attrs = [ 'bold' ] ).center( columns ) ) if self.saving_acc == 'approved' else 'Saving account is not approved yet!'
+                        print( colored( '2. Fixed', 'yellow', attrs = [ 'bold' ] ).center( columns ) ) if self.fixed_acc == 'approved' else 'Fixed account is not approved yet!'
                         op = int( input( colored( 'Enter Type of Account: ', 'blue', attrs = [ 'bold' ] ).center( columns ) ) )
                         if op == 1:
                             obj = Customer.controllers.CustomerController.CustomerController( self.accNo, self.password )
@@ -101,5 +103,23 @@ class CustomerLogin( Customer.Customer.Customer ):
                         obj.resetPin( )
 
                     elif inp == 6:
-                        return
+                        print( colored( '1. Saving', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                        print( colored( '2. Fixed', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+                        to_acc = int( input( colored( 'Enter Type of Account( 1-2 ): ', 'blue', attrs = [ 'bold' ] ) ) )
+                        print( to_acc, self.saving_acc, self.fixed_acc ) 
+                        if ( self.saving_acc == 'pending' and to_acc == 1 ):
+                            # print( colored( 'Account is already verified', 'red', attrs = [ 'bold' ] ).center( columns ) )
+                            obj = Customer.controllers.CustomerRegister.CustomerRegisteration( )
+                            obj.openSavingFixedAccount( self.accNo, to_acc )
+                            return                                              
+                        elif ( self.fixed_acc == 'pending' and to_acc == 2 ):
+                            # print( colored( 'Account is already verified', 'red', attrs = [ 'bold' ] ).center( columns ) )                                              
+                            obj = Customer.controllers.CustomerRegister.CustomerRegisteration( )
+                            obj.openSavingFixedAccount( self.accNo, to_acc )
+                        
+                        else:
+                            print( colored( 'Account process is already initiated', 'red', attrs = [ 'bold' ] ).center( columns ) )                                              
 
+
+                    elif inp == 7:
+                        return

@@ -75,26 +75,23 @@ class CustomerController( ):
 
         amount = input( colored( 'Enter amount to deposit: ', 'blue', attrs = [ 'bold' ] ) )
         bal = self.fetchBalance( self.accNo, account_type )
-        # print( bal )
-        # print( account_type )
+        
         if account_type == 'saving':
     
             new_bal = int(bal[ 1 ]) + int( amount )
             # print( bal[ 1 ], amount, new_bal )
             query = 'UPDATE account set balance_saving=%s WHERE acc_no=%s'
             found = self.obj.withdraw( query, self.accNo, str( new_bal ) )
-            # if ( found ):
-            # print('inside found*****')
             query = 'insert into transaction ( accNo, to_acc_no, amount_transfered, date, trans_type, before_bal, updated_bal ) values ( %s, %s, %s , %s, %s, %s, %s )'
             found = self.obj.updateTransaction( query, self.accNo, "self", amount, datetime.datetime.now(), "deposit", bal[ 1 ], new_bal  )
 
         else:
             new_bal = int( bal[ 2 ] ) + int( amount )
-            print( bal[ 1 ], amount, new_bal )
+            print( bal[ 2 ], amount, new_bal )
             query = 'UPDATE account set balance_fixed=%s WHERE acc_no=%s'
             found = self.obj.withdraw( query, self.accNo, str( new_bal ) )
             query = 'insert into transaction ( accNo, to_acc_no, amount_transfered, date, trans_type, before_bal, updated_bal ) values ( %s, %s, %s , %s, %s, %s, %s )'
-            found = self.obj.updateTransaction( query, self.accNo, "self_fixed", amount, datetime.datetime.now(), "deposit_fixed", bal[ 1 ], new_bal  )
+            found = self.obj.updateTransaction( query, self.accNo, "self_fixed", amount, datetime.datetime.now(), "deposit_fixed", bal[ 2 ], new_bal  )
 
     def fetchBalance( self, accNo, account_type ):
 

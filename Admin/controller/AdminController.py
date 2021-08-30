@@ -1,3 +1,5 @@
+from datetime import datetime
+from re import A
 import config
 import Admin.services.AdminService
 
@@ -93,3 +95,68 @@ class AdminController():
             print( colored( 'Transaction Type : ', 'blue', attrs = [ 'bold' ] ), row[ 4 ] )
             print( colored( 'Previous Balance : ', 'blue', attrs = [ 'bold' ] ), row[ 5 ] )
             print( colored( 'Updated Balance : ', 'blue', attrs = [ 'bold' ] ), row[ 6 ] )
+
+    def initiateInterest( self ):
+
+        cid = int( input( colored( 'Enter Customer ID: ', 'blue', attrs = [ 'bold' ] ) ) )
+        
+        found = self.obj.fetchByCID( cid )
+        bal = self.obj.checkBalance( found[ 1 ] )
+        print( found, bal )
+        try:
+            print( found[ 8 ] , found[ 8 ] == 'approved' )
+            if ( found[ 8 ] == 'approved' ):
+                print('1', found[ 8 ] , found[ 8 ] == 'approved' )
+                saving_bal = bal[ 0 ][ 1 ]
+                date = found[ 10 ]
+                currentDate = datetime.now( )
+                print( date, currentDate, saving_bal )
+                diff = ( currentDate - date ).total_seconds( )
+                mins = diff/60
+                hours = mins/60
+                days = hours/24
+                month = days/30
+                if month >= 1:
+                    interest = 0.06*int( saving_bal )
+                    print( interest, found[ 1 ] )
+                    total = int( saving_bal ) + interest
+                    print( total )
+                    self.obj.sendDeposit( int( found[ 1 ] ), 1 , str( total ) )
+
+                else:
+                    print( colored( 'Interested will be calculated after completion of 30 Days', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+
+            else:
+                print( colored( 'Saving Account is not approved yet!', 'red', attrs = [ 'bold' ] ).center( columns ) )
+
+
+        except:
+            print( colored( 'NO BALANCE', 'red', attrs = [ 'bold' ] ).center( columns ) )
+        
+
+        try:
+
+            if ( found[ 9 ] == 'approved' ):
+                date = found[ 11 ]
+                fixed_bal = bal[ 0 ][ 2 ]
+                currentDate = datetime.now( )
+                diff = ( currentDate - date ).total_seconds( )
+                mins = diff/60
+                hours = mins/60
+                days = hours/24
+                month = days/30
+                if month >= 1:
+                    interest = 0.08*int( fixed_bal )
+                    print( interest, found[ 1 ] )
+                    total = int( fixed_bal ) + interest
+                    self.obj.sendDeposit( int( found[ 1 ] ), 2 , str( total ) )        
+                else:
+                    print( colored( 'Interested will be calculated after completion of 30 Days', 'yellow', attrs = [ 'bold' ] ).center( columns ) )
+            else:
+                print( colored( 'Fixed Account is not approved yet!', 'red', attrs = [ 'bold' ] ).center( columns ) )
+
+        
+        except:
+
+            print( colored( 'NO BALANCE', 'red', attrs = [ 'bold' ] ).center( columns ) )
+            
